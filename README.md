@@ -62,6 +62,16 @@ python3 scripts/init_vault.py --vault "/你的/Obsidian/库路径"
 
 会生成：`Raw Sources/`、`Wiki/`、`AGENTS.md`、`SCHEMA.md`、`index.md`、`log.md`、`欢迎.md`。
 
+### 依赖与说明（Dependencies）
+
+| 能力 | 用途 | 获取方式 |
+|---|---|---|
+| 豆包工作 | 对话式 AI 入口（Skill 运行宿主） | [豆包工作官网](https://www.doubao.com/) 安装桌面端 |
+| 飞书妙记 | 视频 → 逐字稿转写 | 豆包工作内授权飞书账号，首次视频转写会自动触发授权 |
+| doubao-video-extract | 视频下载/转音频/妙记链路 | 豆包工作内置视频提取能力；若你的环境没有，可跳过视频类输入（文章/截图/文件仍可用） |
+
+> **给首次使用者的提示**：本 Skill 的核心是"对话驱动"——你不需要配置 API Key。视频转写能力依赖飞书妙记授权；若只想先跑通文本/截图/链接入库，无需任何额外授权。
+
 ### 喂第一份内容
 打开豆包工作，直接说：
 
@@ -88,6 +98,34 @@ python3 scripts/init_vault.py --vault "/你的/Obsidian/库路径"
 
 - Wiki 页面与 Raw Sources 用 Obsidian 双括号 `[[链接]]` 互连
 - 每次摄入/更新都写 `log.md`，同步 `index.md` 页面总数
+
+---
+
+## 效果示例（Preview）
+
+`scripts/init_vault.py` 初始化后的库结构：
+
+```text
+你的库/
+├── Raw Sources/01-使用说明.md          # 原始摄入指引
+├── Wiki/_template.md                  # 总结页模板
+├── AGENTS.md                          # 规则层
+├── SCHEMA.md                          # 页面 Schema
+├── index.md                           # 全库目录（页面总数随摄入增长）
+├── log.md                             # 操作日志
+└── 欢迎.md                            # 入库起点
+```
+
+一次视频摄入后的实际产物（真实案例）：
+
+```text
+Raw Sources/2026-10-01-obsidian专家系统-zettelkasten.md   # 21 段落中英双语逐字稿
+Wiki/Obsidian-Zettelkasten成为专家系统.md                  # AI 维护的总结页
+index.md  → 页面总数 8，新增一行摘要
+log.md    → 追加：来源/链路/创建文件
+```
+
+Obsidian 图视图中：Raw Sources（红）→ Wiki 总结页（蓝）→ 概念页（灰），双括号 `[[链接]]` 形成知识网络。
 
 ---
 
