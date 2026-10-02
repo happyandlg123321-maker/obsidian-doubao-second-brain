@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# macOS
+.DS_Store
+
+# 本地测试知识库（init_vault.py --demo 生成的示例库不入库）
+demo_vault/
+/tmp/vault-test/
+
+# 编辑器和 IDE
+.vscode/
+.idea/
+
+# 日志
+*.log
