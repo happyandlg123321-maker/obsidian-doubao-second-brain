@@ -75,14 +75,23 @@ python3 scripts/init_vault.py --vault /路径/到/库
 5. 更新 index/log
 ```
 
-## 流程 G：问答沉淀（Queries 写回）
+**人脉检索**（对标 Matt 演示「where did I meet Matthew Berman」）：
+```text
+1. 用户问「我和 XX 上次聊了什么」「XX 是哪家公司的」
+2. 读 CRM/<姓名>.md 的「最近一次互动」/「背景」
+3. 库内无记录 → 如实说明，提示用户补充，不虚构
+```
+
+## 流程 G：提问 grounded 协议 + 问答沉淀（Queries 写回）
 
 ```text
 1. 用户向知识库提问（如「我对 XX 有什么认知？」）
-2. 读 index.md + 相关 Wiki/Entities 页
-3. 基于库内内容回答，附引用来源
-4. 答案有复用价值时 → 写回 Wiki/Queries/<日期>-<问题>.md
-5. 更新 index/log
+2. 读 index.md 定位相关页
+3. 读取相关 Wiki/Entities/CRM/Queries 页
+4. 基于库内内容回答，标注引用来源（[[Wiki/相关页]]）
+5. 库内没有的部分明确区分「库内知识」与「通用 AI 知识」
+6. 答案有复用价值时 → 写回 Wiki/Queries/<日期>-<问题>.md
+7. 更新 index/log
 ```
 
 ## 流程 H：摄入四步（每次处理原始内容必做）
@@ -104,6 +113,18 @@ python3 scripts/init_vault.py --vault /路径/到/库
 - 每日 09:00：读 index.md 与库内文件核对一致性，差异写 log.md
 - 每日 22:00：执行流程 E 生成当日复盘（若用户当天未手动复盘）
 - 每日 23:00：git add -A + commit（本机可用时）；配置私有 GitHub remote 后自动 push
+
+## 流程 J：会议录音入库（对标 Granola 会议注入）
+
+```text
+1. 用户提供会议录音（或引用豆包工作已录制的音频）
+2. 录音转写（豆包录音转写 / analyze_audio）
+3. 逐字稿写入 Raw Sources/<日期>-<会议主题>.md
+   frontmatter: content_type=meeting, author=参会人/组织
+4. 执行摄入四步（流程 H：总结/实体/互链/归档）
+5. 会议提及的人 → 自动关联 CRM（已存在追加互动；不存在提示用户创建）
+6. 更新 index/log
+```
 
 ## 通用规则
 

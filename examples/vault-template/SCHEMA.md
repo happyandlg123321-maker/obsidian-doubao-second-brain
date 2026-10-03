@@ -1,7 +1,7 @@
 # 页面结构 Schema（SCHEMA.md）
 
 ## Raw Sources 页面
-- frontmatter: `source_url`（来源链接）/ `ingested`（日期）/ `content_type`（video/article/image）/ `lang`（zh-en 等）
+- frontmatter: `source_url`（来源链接）/ `author`（作者/频道名）/ `ingested`（日期）/ `content_type`（video/article/image/meeting）/ `lang`（zh-en 等）
 - 正文：原始内容/双语逐字稿/提取结果，保留来源信息
 - 处理完成后文件移入 `Raw Sources/processed/`
 
