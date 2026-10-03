@@ -1,8 +1,10 @@
 # Obsidian Doubao Second Brain（豆包第二大脑）
 
-> **EN TL;DR**: A Doubao Work (豆包工作) Skill that turns **Obsidian** into a self-updating second brain — **three pillars** (Wiki / Journal / CRM) + **entity layer** (auto-extracted people/companies/tools/ideas/themes) + **query recycling** (answers written back) + raw/processed archiving + auto-linking + pattern detection + auto-backup. Feed in videos / articles / screenshots / links, transcribe with Feishu Minutes (飞书妙记), produce bilingual (EN/中文) notes. The Chinese, no-code counterpart of Matt Wolfe's *Obsidian + Codex* setup — **all features aligned**.
+> ⭐ **如果这个 Skill 对你有用，请点个 Star**——你的支持是持续维护的动力！
 
-用 **豆包工作 + Obsidian** 搭建的「第二大脑」开源 Skill——对标 Matt Wolfe《Build A Second Brain That Remembers Everything》（Obsidian + Codex）方案的中文零代码版，**12 项能力全对齐**。
+> **EN TL;DR**: A Doubao Work (豆包工作) Skill that turns **Obsidian** into a self-updating second brain — **three pillars** (Wiki / Journal / CRM) + **entity layer** (auto-extracted people/companies/tools/ideas/themes) + **query recycling** (answers written back) + raw/processed archiving + auto-linking + pattern detection + auto-backup + meeting intake + contact retrieval + grounded Q&A. Feed in videos / articles / screenshots / links / meeting recordings, transcribe with Feishu Minutes (飞书妙记), produce bilingual (EN/中文) notes. The Chinese, no-code counterpart of Matt Wolfe's *Obsidian + Codex* setup — **15 features aligned**.
+
+用 **豆包工作 + Obsidian** 搭建的「第二大脑」开源 Skill——对标 Matt Wolfe《Build A Second Brain That Remembers Everything》（Obsidian + Codex）方案的中文零代码版，**15 项能力全对齐**。
 
 - 🧠 **三支柱**：**Wiki**（知识库）+ **Journal**（每日复盘，含模式识别）+ **CRM**（人脉笔记，连接万物）
 - 🏷 **实体层**：自动提取人物/公司/工具/想法/主题 → 实体页累积「提及记录」（点工具页能看到所有提到它的来源）
@@ -45,7 +47,7 @@ flowchart LR
     Q2 --> L
 ```
 
-## 与 Matt Wolfe 方案 12 项逐条对齐
+## 与 Matt Wolfe 方案 15 项逐条对齐
 
 | # | Matt Wolfe 核心能力 | 本 Skill 实现 |
 |---|---|---|
@@ -191,7 +193,7 @@ Obsidian 图视图中：Raw Sources → Wiki → Entities → Journal/CRM/Querie
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — 架构与对标分析（全能力）
 - [docs/SOP.md](docs/SOP.md) — 视频/文章/截图/复盘/CRM/问答/巡检的标准操作流程
-- [docs/COMPARISON.md](docs/COMPARISON.md) — 与 Matt Wolfe 方案 12 项逐条对比
+- [docs/COMPARISON.md](docs/COMPARISON.md) — 与 Matt Wolfe 方案 15 项逐条对比
 
 ## 示例模板（Examples）
 
@@ -215,5 +217,5 @@ Obsidian 图视图中：Raw Sources → Wiki → Entities → Journal/CRM/Querie
 ## 致谢（Credits）
 
 - Andrej Karpathy — [LLM Wiki](https://gist.github.com/karpathy/00103b0037c5a36c4870588b1a0c0d8d) 概念
-- Matt Wolfe — Obsidian + Codex 第二大脑方案（本项目的英文对标：12 项能力全对齐）
+- Matt Wolfe — Obsidian + Codex 第二大脑方案（本项目的英文对标：15 项能力全对齐）
 - 飞书妙记 — 视频转写能力
