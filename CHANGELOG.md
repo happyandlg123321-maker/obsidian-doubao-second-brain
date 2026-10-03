@@ -4,14 +4,26 @@
 
 ## [Unreleased]
 
+### Added — v0.3 全能力（对标 Matt Wolfe 12 项全对齐）
+- **实体页层**：`Wiki/Entities/` 自动提取人物/公司/工具/想法/主题，实体页累积「提及记录」（点击实体可见所有提到它的来源）
+- **自动互链**：摄入四步之三——查 index 与现有页互相补链接 + Wiki 页反向引用来源
+- **raw/processed 归档**：处理完的原始文件自动移入 `Raw Sources/processed/`，收件箱保持干净
+- **问答沉淀**：`Wiki/Queries/` 答案写回，每次提问都在复利
+- **Journal 模式识别**：扫描近 30 天历史复盘，同一主题/挣扎 ≥3 次标注「📈 模式识别」
+- **CRM 连接万物**：`linked_entities` 字段，联系人自动关联公司/工具/话题实体并互链
+- **自动备份**：每日 git commit（可配置私有 GitHub 远程自动 push）
+- init_vault.py 升级：骨架生成 16 文件（Entities/Queries/processed 模板 + 演示页），已验证幂等
+
+### Changed
+- SKILL.md / README.md / docs×3 / examples 全部升级到全能力版
+- docs/COMPARISON.md 改为 12 项逐条对齐表
+
+## [0.2.0] - 2026-10-02
+
 ### Added
-- **三支柱架构**：新增 Journal（每日复盘）与 CRM（人脉笔记）两支柱，对标 Matt Wolfe 方案
-- `init_vault.py` 升级：骨架生成 Journal/CRM 目录与模板（--demo 含三支柱示例页）
-- SKILL.md 升级：三支柱触发话术（「今天复盘」「记录一下 XX」）、定时自动化章节、备份建议
-- README 升级：三支柱介绍、与 Matt Wolfe 六特性逐条对齐表、备份建议
-- docs 升级：ARCHITECTURE（三支柱）、SOP（新增流程 E 复盘 / F CRM / G 定时巡检）、COMPARISON（六特性对齐）
-- examples/vault-template 升级：新增 Journal/_template.md、CRM/_template.md
-- 发布清单 RELEASE.md
+- **三支柱架构**：Journal（每日复盘）+ CRM（人脉笔记），对标 Matt Wolfe
+- init_vault.py：Journal/CRM 目录与模板（12 文件，幂等）
+- 定时自动化章节、备份建议、六特性对齐表
 
 ## [0.1.0] - 2026-10-01
 

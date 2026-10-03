@@ -5,6 +5,7 @@ updated: 2026-10-01
 type: summary
 tags: [待定]
 sources: [Raw Sources/<来源文件>.md]
+entities: [Wiki/Entities/<实体页>.md]
 confidence: medium
 ---
 
@@ -17,7 +18,11 @@ confidence: medium
 - 要点一
 - 要点二
 
-## 与本库的关系
+## 相关实体（自动提取）
+- [[实体-人物-xxx]]：本页提及的人物
+- [[实体-工具-xxx]]：本页提及的工具
+
+## 与本库的关系（自动互链）
 - 与 [[index]] 中其他页面的关联
 
 ## 与其他知识的关联

@@ -1,19 +1,28 @@
 ---
 name: obsidian-doubao-second-brain
-description: 用豆包工作 + Obsidian 搭建「第二大脑」知识库，三支柱架构（Wiki 知识库 + Journal 每日复盘 + CRM 人脉笔记）。对标 Matt Wolfe 的 Obsidian+Codex 方案，中文零代码版：视频链接（B站/YouTube）、文章链接、截图、本地文件、对话内容 → 提取/转写 → 中英双语 → 写入 Obsidian 库。当用户说「把这个链接/截图/视频整理进我的 Obsidian」「同步到知识库」「做中英双语入库」「今天复盘」「记录一下 XX（人脉）」等时使用。使用前要求 Obsidian 库已初始化（含 AGENTS.md/SCHEMA.md/index.md/log.md，可用 scripts/init_vault.py 生成）。
+description: 用豆包工作 + Obsidian 搭建「第二大脑」知识库，全能力架构对标 Matt Wolfe 的 Obsidian+Codex 方案（中文零代码版）：三支柱（Wiki 知识库 + Journal 每日复盘 + CRM 人脉笔记）+ 实体层（自动提取人物/公司/工具/想法/主题）+ 问答沉淀（答案写回）+ raw/processed 归档 + 自动互链 + 模式识别 + 自动备份。视频链接（B站/YouTube）、文章链接、截图、本地文件、对话内容 → 提取/转写 → 中英双语 → 写入 Obsidian 库。当用户说「把这个链接/截图/视频整理进我的 Obsidian」「同步到知识库」「做中英双语入库」「今天复盘」「记录一下 XX（人脉）」「问知识库一个问题」等时使用。使用前要求 Obsidian 库已初始化（含 AGENTS.md/SCHEMA.md/index.md/log.md，可用 scripts/init_vault.py 生成）。
 ---
 
 # 豆包第二大脑（Obsidian Second Brain）
 
-将外部内容持续沉淀进用户的 Obsidian 本地库，形成可检索、可复利、三支柱驱动的知识系统。
+将外部内容持续沉淀进用户的 Obsidian 本地库，形成可检索、可复利、全能力驱动的知识系统。对标 Matt Wolfe《Build A Second Brain That Remembers Everything》方案，中文零代码实现。
 
-## 三支柱
+## 能力总览（对标 Matt Wolfe 全对齐）
 
-| 支柱 | 目录 | 用途 | 触发话术 |
-|---|---|---|---|
-| Wiki | `Wiki/` | 知识总结页（摄入内容加工后） | 「整理进知识库」 |
-| Journal | `Journal/` | 每日复盘（AI 从 Wiki 取知识） | 「今天复盘」 |
-| CRM | `CRM/` | 人脉笔记（背景/互动/跟进） | 「记录一下 XX」 |
+| # | 能力 | 实现 |
+|---|---|---|
+| 1 | 三支柱（Wiki/Journal/CRM） | `Wiki/` `Journal/` `CRM/` |
+| 2 | LLM-Wiki 架构 | Raw Sources → Wiki → index/log |
+| 3 | 定时自动化 | 豆包工作定时任务（每日巡检+复盘） |
+| 4 | agents.md 单一控制文件 | AGENTS.md 一份规则驱动全部 |
+| 5 | 剪藏收集 | 链接/截图/文件/对话直喂 |
+| 6 | 私有备份 | git commit + 私有 GitHub remote |
+| 7 | **实体页层**（人物/公司/工具/想法/主题） | `Wiki/Entities/` 自动提取累积 |
+| 8 | **自动互链**（auto-link + back-link） | 摄入时检索现有库互链 |
+| 9 | **raw/processed 归档** | 处理完移入 `Raw Sources/processed/` |
+| 10 | **问答写回** | 答案沉淀到 `Wiki/Queries/` |
+| 11 | **Journal 模式识别** | 扫描近 30 天复盘，≥3 次标注模式 |
+| 12 | **CRM 连接万物** | 人脉关联实体/想法/事件互链 |
 
 ## 触发场景
 
@@ -22,11 +31,12 @@ description: 用豆包工作 + Obsidian 搭建「第二大脑」知识库，三�
 - 用户说「同步到 Obsidian」「整理进知识库」「做成中英双语」
 - 用户说「今天复盘/写日记」→ 生成 Journal
 - 用户说「记录一下 XX」「刚才见了 XX」→ 写入 CRM
+- 用户向知识库提问 → 答案写回 Queries（可选）
 
 ## 前置条件检查
 
 1. 确认用户 Obsidian 库路径（含 `Raw Sources/`、`Wiki/`、`Journal/`、`CRM/`、`index.md`、`log.md`）
-2. 库未初始化时：运行 `scripts/init_vault.py --vault <路径>` 生成骨架（含三支柱模板）
+2. 库未初始化时：运行 `scripts/init_vault.py --vault <路径>` 生成骨架（含 Entities/Queries/processed）
 3. 视频转写需要豆包工作授权飞书妙记（首次使用会触发授权）
 
 ## 工作流程
@@ -40,8 +50,9 @@ description: 用豆包工作 + Obsidian 搭建「第二大脑」知识库，三�
 | 截图/豆包工作界面 | 读图提取文字与结构 |
 | 本地文件（md/docx/pdf） | 读取 → 转写或摘要 |
 | 对话内容 | 直接整理成笔记 |
-| 「今天复盘」 | 读 Wiki 最近更新 → 生成 Journal/<日期>-复盘.md |
-| 「记录 XX」 | 查 CRM 是否已有 → 新建/追加 <姓名>.md |
+| 「今天复盘」 | 读 Wiki 最近更新 + 扫描历史复盘模式 → Journal/<日期>-复盘.md |
+| 「记录 XX」 | 查 CRM 是否已有 → 新建/追加 <姓名>.md + 关联实体 |
+| 知识库提问 | 读 index + 相关页 → 回答 →（可选）写回 Queries |
 
 ### 2. 视频转写链路（doubao-video-extract Skill 能力）
 
@@ -49,27 +60,42 @@ description: 用豆包工作 + Obsidian 搭建「第二大脑」知识库，三�
 - 遇到「充电/会员专属」试看限制：从简介/搜索溯源 YouTube 原版，取完整版
 - 转写产物：段落级逐字稿（含时间戳），再生成中英双语版本
 
-### 3. 入库规范（LLM-Wiki 三层 + 两支柱）
+### 3. 摄入链路（每次处理必做四步）
 
-- `Raw Sources/<日期>-<主题>.md`：原始摄入存档（双语逐字稿/提取内容），frontmatter 含 source_url/ingested/content_type/lang
-- `Wiki/<主题>.md`：AI 维护的 summary 页（摘要/关键要点/与本库关系/来源），用双括号 `[[链接]]` 关联
-- `Journal/<日期>-复盘.md`：每日复盘（今日做了什么/今日新知从 Wiki 引用/明日计划/库内建议）
-- `CRM/<姓名>.md`：人脉笔记（背景/最近互动/关注点/下次跟进）
-- `index.md`：更新页面总数与摘要行
-- `log.md`：顶部追加摄入记录（动作/来源/链路/创建文件）
+1. **总结**：生成 `Wiki/<主题>.md` 总结页（摘要/要点/相关实体/关联）
+2. **提取实体**：扫描人物/公司/工具/想法/主题 → 创建或更新 `Wiki/Entities/<实体>.md`，追加「提及记录」（日期+来源+观点）
+3. **自动互链**：查 index 与现有 Wiki/Entities 页，同主题/同实体互相补双括号链接；Wiki 页反向引用来源笔记
+4. **归档**：将原始文件移入 `Raw Sources/processed/`
 
-### 4. 自动化（可选，推荐）
+### 4. Journal 复盘（含模式识别）
 
-用豆包工作定时任务（doubao-cron-scheduler）配置每日巡检：
+- 今日做了什么（用户提供，缺省标「待补充」）
+- 今日新知：从 Wiki 引用 1-3 页
+- 📈 模式识别：扫描近 30 天历史复盘，同一主题/挣扎出现 ≥3 次则标注
+- 明日计划 + 基于库内知识的建议
+
+### 5. CRM 录入（连接万物）
+
+- 记录背景/最近互动/关注点/下次跟进，缺省标「待补充」
+- 自动检索库中相关实体页（所在公司/提到的工具/聊过的主题），写入 `linked_entities` 并互链
+
+### 6. 问答沉淀（Queries）
+
+- 用户提问且答案基于库内内容时，写回 `Wiki/Queries/<日期>-<问题>.md`（问题/答案/引用来源）
+- 每答一次，库就多一份可复用知识
+
+### 7. 自动化与备份（可选，推荐）
+
+用豆包工作定时任务（doubao-cron-scheduler）配置：
 - 每日 09:00：读 index.md 与库内文件核对一致性，更新 log.md
-- 每日 22:00：生成当日 Journal 复盘（引用 Wiki 最近更新）
+- 每日 22:00：生成当日 Journal 复盘（若用户当天未手动复盘）
+- 每日 23:00：git add -A + commit（本机可用时）；配置私有 GitHub remote 后自动 push
 
-### 5. 交付
+### 8. 交付
 
 - 报告产物路径与内容概要
 - 提醒 Obsidian 外接卷需 `Cmd+P → Reload app` 刷新
 - 涉及隐私（银行卡/密码/证件/家庭住址/资产）内容拒绝入库
-- 备份建议：库目录定期 commit 到私有 GitHub 仓库或 Obsidian Sync
 
 ## 反模式
 
@@ -78,3 +104,4 @@ description: 用豆包工作 + Obsidian 搭建「第二大脑」知识库，三�
 - 不把用户私有提示词/内部资料写入公开材料
 - 不从搜索/浏览器替代转写证据（视频内容必须来自转写产物）
 - Journal/CRM 缺省字段标「待补充」，不替用户虚构事实（如"昨天见了谁"）
+- 实体「提及记录」只记内容中真实出现的信息，不做联想推断
