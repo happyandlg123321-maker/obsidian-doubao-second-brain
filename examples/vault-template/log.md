@@ -4,4 +4,4 @@
 > 格式：`## [YYYY-MM-DD] 动作 | 主题`（动作：摄入 / 更新 / 查询 / 巡检 / 创建）
 
 ## [2026-10-01] 创建 | 知识库初始化
-- 建立三层架构：Raw Sources / Wiki / AGENTS.md + SCHEMA.md
+- 建立三支柱架构：Raw Sources / Wiki / Journal / CRM + AGENTS.md + SCHEMA.md

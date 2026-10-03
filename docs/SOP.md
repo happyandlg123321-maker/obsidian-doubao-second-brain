@@ -47,7 +47,37 @@
 python3 scripts/init_vault.py --vault /路径/到/库
 ```
 
-生成：`Raw Sources/` `Wiki/` `AGENTS.md` `SCHEMA.md` `index.md` `log.md` `欢迎.md`
+生成三支柱骨架：`Raw Sources/` `Wiki/` `Journal/` `CRM/` `AGENTS.md` `SCHEMA.md` `index.md` `log.md` `欢迎.md`
+
+## 流程 E：每日复盘（Journal）
+
+```text
+1. 用户说「今天复盘」
+2. 读 index.md + Wiki 最近更新（近 7 天）
+3. 生成 Journal/<日期>-复盘.md：
+   今日做了什么（用户提供，缺省标待补充）
+   今日新知（从 Wiki 引用 1-3 页，双括号链接）
+   明日计划（用户提供或 AI 建议）
+   基于库内知识的建议（引用自 Wiki 内容）
+4. 更新 index/log
+```
+
+## 流程 F：人脉录入（CRM）
+
+```text
+1. 用户说「记录一下 XX」
+2. 查 CRM/ 是否已有 <姓名>.md：
+   已有 → 追加「最近一次互动」（保留原内容）
+   没有 → 新建（背景/最近互动/关注点/下次跟进）
+3. 缺省字段标「待补充」，不虚构
+4. 更新 index/log
+```
+
+## 流程 G：定时巡检（可选，推荐）
+
+用豆包工作定时任务（doubao-cron-scheduler）配置：
+- 每日 09:00：读 index.md 与库内文件核对一致性，差异写 log.md
+- 每日 22:00：执行流程 E 生成当日复盘（若用户当天未手动复盘）
 
 ## 通用规则
 
@@ -56,3 +86,4 @@ python3 scripts/init_vault.py --vault /路径/到/库
 - **保留用户改动**：不覆盖用户重命名/编辑过的页面
 - **隐私拦截**：证照/密码/家庭住址/资产内容拒绝入库
 - 每次动作写 `log.md`，页面增减同步 `index.md`
+- **备份**：建议库目录定期 commit 到私有 GitHub 仓库或 Obsidian Sync

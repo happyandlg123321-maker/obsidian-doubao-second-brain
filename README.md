@@ -1,14 +1,26 @@
 # Obsidian Doubao Second Brain（豆包第二大脑）
 
-> **EN TL;DR**: A Doubao Work (豆包工作) Skill that turns **Obsidian** into a self-updating second brain — feeding in videos / articles / screenshots / links, transcribing with Feishu Minutes (飞书妙记), and producing bilingual (EN/中文) markdown notes into a Raw Sources → Wiki vault. The Chinese, no-code counterpart of Matt Wolfe's *Obsidian + Codex* setup.
+> **EN TL;DR**: A Doubao Work (豆包工作) Skill that turns **Obsidian** into a self-updating second brain — **three pillars**: Wiki (knowledge base), Journal (daily review grounded in your vault), CRM (contact memory). Feed in videos / articles / screenshots / links, transcribe with Feishu Minutes (飞书妙记), produce bilingual (EN/中文) notes. The Chinese, no-code counterpart of Matt Wolfe's *Obsidian + Codex* setup.
 
-用 **豆包工作 + Obsidian** 搭建的「第二大脑」开源 Skill——对标 Matt Wolfe《Build A Second Brain That Remembers Everything》（Obsidian + Codex）方案的中文零代码版。
+用 **豆包工作 + Obsidian** 搭建的「第二大脑」开源 Skill——对标 Matt Wolfe《Build A Second Brain That Remembers Everything》（Obsidian + Codex）方案的中文零代码版，**三支柱架构**。
 
-- 🧠 **喂什么都能消化**：视频链接（B站/YouTube）、文章链接、截图、本地文件、对话内容
+- 🧠 **三支柱**：**Wiki**（知识库）+ **Journal**（每日复盘，AI 从你的库里取依据）+ **CRM**（人脉笔记）
 - 🎙 **飞书妙记转写**：视频自动转逐字稿（B站试看受限时自动溯源 YouTube 原版）
 - 🌐 **中英双语**：逐字稿段落级 EN 原文 + 中文意译
-- 📚 **Karpathy LLM-Wiki 三层架构**：`Raw Sources`（原始摄入）→ `Wiki`（AI 维护总结）→ `index.md`（目录）+ `log.md`（操作日志）
+- 📚 **LLM-Wiki 架构**：`Raw Sources`（原始摄入）→ `Wiki`（AI 维护总结）→ `index.md` + `log.md`
 - 🤝 **人在环中**：哪些入库、怎么翻译，由你决定——不是全自动的黑盒
+
+---
+
+## 三支柱（Three Pillars）
+
+| 支柱 | 目录 | 干什么 | 怎么说一句话触发 |
+|---|---|---|---|
+| **Wiki** | `Wiki/` | 收藏内容 → AI 加工成可检索的总结页，双括号互链 | 「把这个链接整理进知识库」 |
+| **Journal** | `Journal/` | 每日复盘，AI 从 Wiki 挑出与今天最相关的内容形成「今日新知」 | 「今天复盘一下」 |
+| **CRM** | `CRM/` | 人脉笔记：背景 / 最近互动 / 关注点 / 下次跟进 | 「记录一下刚才见的 XX」 |
+
+三根支柱由**一份规则文件**（`AGENTS.md`）同时驱动——对标 Matt Wolfe 的 agents.md 单一控制文件。
 
 ---
 
@@ -27,21 +39,24 @@ flowchart LR
     H --> I[Wiki AI 维护总结页]
     I --> J[index.md 目录]
     I --> K[log.md 操作日志]
+    I --> J2[Journal 每日复盘]
+    I --> C2[CRM 人脉笔记]
     J --> L[Obsidian 本地库<br>Markdown 全文可检索]
     K --> L
+    J2 --> L
+    C2 --> L
 ```
 
-对比 Matt Wolfe 方案：
+与 Matt Wolfe 方案逐特性对齐：
 
-| 组件 | Matt Wolfe（Codex 版） | 本 Skill（豆包工作版） |
+| # | Matt Wolfe 核心特性 | 本 Skill 实现 |
 |---|---|---|
-| 前端 | Obsidian | Obsidian |
-| AI 后端 | OpenAI Codex（CLI） | 豆包工作（对话即界面） |
-| 内容收集 | Obsidian Web Clipper | 链接/截图/文件直接喂给豆包 |
-| 视频转写 | 第三方转写服务 | 飞书妙记（内置链路） |
-| 自动化 | 每小时 cron 后台跑 | 人在环中，对话内触发 |
-| 门槛 | 需命令行/API Key | **零代码，中文** |
-| 知识把关 | 全自动 | **你决定哪些入库** |
+| 1 | 三支柱（Wiki + Journal + CRM） | ✅ 三支柱齐备 |
+| 2 | LLM-Wiki 架构（raw → 总结 → 交叉链接） | ✅ Raw Sources → Wiki → index/log |
+| 3 | 每小时自动化 | ✅ 豆包工作定时任务（每日巡检 + 复盘） |
+| 4 | agents.md 单一控制文件 | ✅ AGENTS.md 一份规则驱动三支柱 |
+| 5 | Web Clipper 收集 | ✅ 等价：链接/截图/文件直喂豆包 |
+| 6 | 私有备份 + 复合增长 | ✅ 建议私有仓库备份；每摄入一条，库更聪明 |
 
 ---
 
@@ -60,7 +75,7 @@ flowchart LR
 python3 scripts/init_vault.py --vault "/你的/Obsidian/库路径"
 ```
 
-会生成：`Raw Sources/`、`Wiki/`、`AGENTS.md`、`SCHEMA.md`、`index.md`、`log.md`、`欢迎.md`。
+会生成三支柱骨架：`Raw Sources/`、`Wiki/`、`Journal/`、`CRM/`、`AGENTS.md`、`SCHEMA.md`、`index.md`、`log.md`、`欢迎.md`。
 
 ### 依赖与说明（Dependencies）
 
@@ -81,6 +96,12 @@ python3 scripts/init_vault.py --vault "/你的/Obsidian/库路径"
 
 > Obsidian 外接卷新文件需 `Cmd+P → Reload app` 刷新。
 
+### 用第二、第三支柱
+
+> 「今天复盘一下」→ 生成 `Journal/<日期>-复盘.md`（AI 从 Wiki 引用今日新知）
+>
+> 「记录一下 XX，XX 公司的」→ 生成 `CRM/<姓名>.md`（背景/互动/关注点/下次跟进）
+
 ---
 
 ## 知识库规范（Vault Convention）
@@ -88,56 +109,61 @@ python3 scripts/init_vault.py --vault "/你的/Obsidian/库路径"
 ```
 你的库/
 ├── Raw Sources/          # 原始摄入：逐字稿、原文存档（AI 提取物）
-├── Wiki/                 # AI 维护的总结/概念页（人写的知识）
-├── AGENTS.md             # 告诉豆包工作如何维护本库（规则层）
+├── Wiki/                 # AI 维护的总结/概念页（知识支柱）
+├── Journal/              # 每日复盘（复盘支柱）
+├── CRM/                  # 人脉笔记（人脉支柱）
+├── AGENTS.md             # 告诉豆包工作如何维护本库（规则层，驱动三支柱）
 ├── SCHEMA.md             # 页面结构 Schema
 ├── index.md              # 全库目录（AI 提问前先读这里）
 ├── log.md                # 操作日志（最新在上）
 └── 欢迎.md               # 入库起点
 ```
 
-- Wiki 页面与 Raw Sources 用 Obsidian 双括号 `[[链接]]` 互连
+- Wiki / Journal / CRM 页面互相用 Obsidian 双括号 `[[链接]]` 关联
 - 每次摄入/更新都写 `log.md`，同步 `index.md` 页面总数
 
 ---
 
 ## 效果示例（Preview）
 
-`scripts/init_vault.py` 初始化后的库结构：
+`scripts/init_vault.py` 初始化后的库结构（--demo 含示例页）：
 
 ```text
 你的库/
 ├── Raw Sources/01-使用说明.md          # 原始摄入指引
 ├── Wiki/_template.md                  # 总结页模板
-├── AGENTS.md                          # 规则层
+├── Journal/_template.md               # 每日复盘模板
+├── CRM/_template.md                   # 人脉笔记模板
+├── AGENTS.md                          # 规则层（驱动三支柱）
 ├── SCHEMA.md                          # 页面 Schema
 ├── index.md                           # 全库目录（页面总数随摄入增长）
 ├── log.md                             # 操作日志
 └── 欢迎.md                            # 入库起点
 ```
 
-一次视频摄入后的实际产物（真实案例）：
+一次真实视频摄入后的产物（真实案例）：
 
 ```text
 Raw Sources/2026-10-01-obsidian专家系统-zettelkasten.md   # 21 段落中英双语逐字稿
 Wiki/Obsidian-Zettelkasten成为专家系统.md                  # AI 维护的总结页
+Journal/2026-10-01-复盘.md                                 # 当日复盘引用该页
 index.md  → 页面总数 8，新增一行摘要
 log.md    → 追加：来源/链路/创建文件
 ```
 
-Obsidian 图视图中：Raw Sources（红）→ Wiki 总结页（蓝）→ 概念页（灰），双括号 `[[链接]]` 形成知识网络。
+Obsidian 图视图中：Raw Sources → Wiki 总结页 → Journal/CRM 页，双括号 `[[链接]]` 形成知识网络。
 
 ---
 
 ## 文档（Docs）
 
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — 架构与对标分析
-- [docs/SOP.md](docs/SOP.md) — 视频/文章/截图三类摄入的标准操作流程
-- [docs/COMPARISON.md](docs/COMPARISON.md) — 与 Codex 方案、Karpathy LLM-Wiki 的详细对比
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — 架构与对标分析（三支柱）
+- [docs/SOP.md](docs/SOP.md) — 视频/文章/截图/复盘/CRM 的标准操作流程
+- [docs/COMPARISON.md](docs/COMPARISON.md) — 与 Matt Wolfe 方案、Karpathy LLM-Wiki 的逐特性对比
 
 ## 示例模板（Examples）
 
-- [examples/vault-template](examples/vault-template/) — 可直接复制进 Obsidian 的知识库骨架模板（AGENTS.md / SCHEMA.md / index.md / log.md / Wiki/_template.md）
+- [examples/vault-template](examples/vault-template/) — 可直接复制进 Obsidian 的知识库骨架模板（AGENTS / SCHEMA / index / log / Wiki / Journal / CRM）
 
 ---
 
@@ -146,6 +172,7 @@ Obsidian 图视图中：Raw Sources（红）→ Wiki 总结页（蓝）→ 概�
 - 你的笔记永远留在本机 Obsidian 库，Markdown 明文
 - 豆包工作只在处理时读取你喂的内容，不采集库内历史笔记
 - 视频转写经飞书妙记（需豆包工作授权），转写结果回落本地库
+- **备份建议**：库目录定期 commit 到私有 GitHub 仓库（或 Obsidian Sync），防数据丢失——私有仓库不公开你的笔记
 
 ## 许可（License）
 
@@ -156,5 +183,5 @@ Obsidian 图视图中：Raw Sources（红）→ Wiki 总结页（蓝）→ 概�
 ## 致谢（Credits）
 
 - Andrej Karpathy — [LLM Wiki](https://gist.github.com/karpathy/00103b0037c5a36c4870588b1a0c0d8d) 概念
-- Matt Wolfe — Obsidian + Codex 第二大脑方案（本项目的英文对标）
+- Matt Wolfe — Obsidian + Codex 第二大脑方案（本项目的英文对标：三支柱 + 自动化 + agents.md）
 - 飞书妙记 — 视频转写能力

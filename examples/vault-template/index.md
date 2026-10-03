@@ -18,3 +18,7 @@
 ## 对比 / 综合分析（comparison）
 
 ## 问答沉淀（query）
+
+## Journal（每日复盘）
+
+## CRM（人脉笔记）
