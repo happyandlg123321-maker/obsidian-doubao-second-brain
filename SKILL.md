@@ -1,6 +1,6 @@
 ---
 name: obsidian-doubao-second-brain
-description: 用豆包工作 + Obsidian 搭建「第二大脑」知识库，全能力架构对标 Matt Wolfe 的 Obsidian+Codex 方案（中文零代码版）：三支柱（Wiki 知识库 + Journal 每日复盘 + CRM 人脉笔记）+ 实体层（自动提取人物/公司/工具/想法/主题）+ 问答沉淀（答案写回）+ raw/processed 归档 + 自动互链 + 模式识别 + 自动备份 + 会议录音入库 + 人脉检索。视频链接（B站/YouTube）、文章链接、会议录音、截图、本地文件、对话内容 → 提取/转写 → 中英双语 → 写入 Obsidian 库。当用户说「把这个链接/截图/视频整理进我的 Obsidian」「同步到知识库」「做中英双语入库」「今天复盘」「记录一下 XX（人脉）」「我和 XX 上次聊了什么」「帮我把这段会议录音整理进知识库」「问知识库一个问题」等时使用。使用前要求 Obsidian 库已初始化（含 AGENTS.md/SCHEMA.md/index.md/log.md，可用 scripts/init_vault.py 生成）。
+description: 用豆包工作 + Obsidian 搭建「第二大脑」知识库，全能力架构对标 Matt Wolfe 的 Obsidian+Codex 方案（中文零代码版）：三支柱（Wiki 知识库 + Journal 每日复盘 + CRM 人脉笔记）+ 实体层（自动提取人物/公司/工具/想法/主题）+ 问答沉淀（答案写回）+ raw/processed 归档 + 自动互链 + 模式识别 + 自动备份 + 会议录音入库 + 人脉检索。视频链接（B站/YouTube）、文章链接、会议录音、截图、本地文件、对话内容 → 提取/转写 → 中英双语 → 写入 Obsidian 库。默认库路径（用户未指定其他库时一律写入）：/home/user/Doubao/chats/38445397980634114/out put/Obsidian-第二大脑/。当用户说「保存」「存一下」「把这个链接/截图/视频整理进我的 Obsidian」「同步到知识库」「做中英双语入库」「今天复盘」「记录一下 XX（人脉）」「我和 XX 上次聊了什么」「帮我把这段会议录音整理进知识库」「问知识库一个问题」等时使用。使用前要求 Obsidian 库已初始化（含 AGENTS.md/SCHEMA.md/index.md/log.md，可用 scripts/init_vault.py 生成）。
 ---
 
 # 豆包第二大脑（Obsidian Second Brain）
@@ -29,6 +29,7 @@ description: 用豆包工作 + Obsidian 搭建「第二大脑」知识库，全�
 
 ## 触发场景
 
+- 用户说「保存」「存一下」→ 默认写入下方默认库路径（用户未指定其他库时）
 - 用户给出链接（视频/文章/网页）并要求入库
 - 用户上传截图/本地文件并要求提取入库
 - 用户说「同步到 Obsidian」「整理进知识库」「做成中英双语」
@@ -37,6 +38,12 @@ description: 用豆包工作 + Obsidian 搭建「第二大脑」知识库，全�
 - 用户说「我和 XX 上次聊了什么」「XX 是哪家公司的」→ 人脉检索
 - 用户提供会议录音/要求「把这段录音整理进知识库」→ 会议入库
 - 用户向知识库提问 → 基于库内回答 +（可选）写回 Queries
+
+## 默认库路径（全局配置）
+
+- **默认库**：`/home/user/Doubao/chats/38445397980634114/out put/Obsidian-第二大脑/`（云端主库，已初始化：Raw Sources/Wiki/Journal/CRM/index/log 齐全）
+- 用户在本轮明确指定其他库路径时，以用户指定为准；未指定一律写入默认库
+- 跨端（云电脑/本地 Mac）时默认库路径可能不同，以当前环境实际存在的库为准；本地 Mac 主库为 `/Volumes/Travel/06-Obsidian-AI知识库/`
 
 ## 前置条件检查
 
